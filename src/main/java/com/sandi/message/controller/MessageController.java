@@ -2,6 +2,7 @@ package com.sandi.message.controller;
 
 import com.sandi.message.model.Message;
 import com.sandi.message.repository.MessageRepository;
+import com.sandi.message.service.MessageService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import org.springframework.http.HttpStatus;
@@ -17,9 +18,11 @@ import javax.validation.constraints.NotNull;
 public class MessageController {
 
     private MessageRepository messageRepository;
+    private MessageService messageService;
 
-    public MessageController(MessageRepository messageRepository){
+    public MessageController(MessageRepository messageRepository, MessageService messageService){
         this.messageRepository = messageRepository;
+        this.messageService = messageService;
     }
 
     @PostMapping("/send")
@@ -34,5 +37,12 @@ public class MessageController {
     @ApiResponse(code = 400, message = "Bad Request")
     public ResponseEntity getMessages(){
         return ResponseEntity.status(HttpStatus.OK).body(messageRepository.findAll());
+    }
+
+    @PostMapping("/sendMessage")
+    @ApiOperation(value = "To Send Message's")
+    @ApiResponse(code = 400, message = "Bad Request")
+    public ResponseEntity send(@NotNull @RequestBody String message){
+        return ResponseEntity.status(HttpStatus.OK).body(messageService.send(message));
     }
 }
