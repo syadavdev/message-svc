@@ -7,14 +7,17 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
 
 @RestController
+@RequestMapping("/api/v1")
 public class MessageController {
 
     private MessageRepository messageRepository;
@@ -28,6 +31,7 @@ public class MessageController {
     @PostMapping("/send")
     @ApiOperation(value = "To Send Message's")
     @ApiResponse(code = 400, message = "Bad Request")
+    @PreAuthorize("hasAuthority('ROLE')")
     public ResponseEntity sendMessage(@NotNull @RequestBody Message message){
         return ResponseEntity.status(HttpStatus.OK).body(messageRepository.save(message));
     }
@@ -35,6 +39,7 @@ public class MessageController {
     @GetMapping("/get")
     @ApiOperation(value = "To Get All Message's")
     @ApiResponse(code = 400, message = "Bad Request")
+    @PreAuthorize("hasAuthority('ROLE1')")
     public ResponseEntity getMessages(){
         return ResponseEntity.status(HttpStatus.OK).body(messageRepository.findAll());
     }
