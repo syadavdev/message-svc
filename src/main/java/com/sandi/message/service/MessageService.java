@@ -1,6 +1,6 @@
 package com.sandi.message.service;
 
-import com.sandi.commonsvc.rabbitmq.MessageSender;
+import com.sandi.commonsvc.activemq.MessageSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
